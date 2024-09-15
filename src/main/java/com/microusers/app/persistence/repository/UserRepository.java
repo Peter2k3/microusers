@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
     Optional<UserEntity> findByIdUsuario(Integer id);
 
     // Buscar todos los proyectos por nombre
-    List<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByEmail(String email);
 
     // Eliminar un usuario
     void deleteByIdUsuario(Integer id);
