@@ -1,29 +1,21 @@
-package com.microusers.app.persistence.entity;
+package com.microusers.app.persistence;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.microusers.app.persistence.entity.RoleEntity;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.HashSet;
-
 import java.util.Set;
 
-@Setter
-@Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "usuarios")
-public class UserEntity {
 
+public class UserEntityDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
 
     @Column(unique = true)
     private String email;
-
-    private String password;
 
     private boolean isEnabled;
 
@@ -32,6 +24,7 @@ public class UserEntity {
     private boolean accountNoLocket;
 
     private boolean credentialNoExpired;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_rol"))

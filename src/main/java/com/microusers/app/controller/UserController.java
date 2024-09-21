@@ -1,17 +1,15 @@
-package com.microusers.app.config;
+package com.microusers.app.controller;
 
 import com.microusers.app.persistence.entity.UserEntity;
 import com.microusers.app.service.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,5 +39,11 @@ public class UserController {
                     .body("Error al guardar el usuario "+ e.getMessage());
         }
 
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getUsers(){
+        List<UserEntity> usuariosList = userService.findAllUsers();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuariosList);
     }
 }

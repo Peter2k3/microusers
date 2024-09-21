@@ -4,7 +4,7 @@ package com.microusers.app.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "proyectos")
-public class Proyectos {
+public class ProjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,11 @@ public class Proyectos {
 
     private String nombre;
 
-    private String uuid;
+    private UUID uuid;
 
-    private Date fechaCreacion;
+    private LocalDateTime fechaCreacion;
+
+    private String customEmail;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "proyectos_usuarios", joinColumns = @JoinColumn(name = "id_proyecto"), inverseJoinColumns = @JoinColumn(name = "id_usuario"))
