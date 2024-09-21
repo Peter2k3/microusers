@@ -21,9 +21,14 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -46,9 +51,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf->csrf.disable()).httpBasic(Customizer.withDefaults())
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable())
+                .cors(withDefaults()) // Habilitar CORS
+                .httpBasic(withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(http -> {
+                    http.requestMatchers(HttpMethod.GET, "/login/hola").permitAll(); // Endpoint público
+                    http.requestMatchers(HttpMethod.GET, "/login/hola-secured").hasAnyAuthority("READ"); // Endpoint privado
+                    http.anyRequest().denyAll(); // Deniega todo lo demás
+                })
                 .build();
+    }
+
+    // Configuración de CORS
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*")); // Permitir cualquier origen, cambiar si es necesario
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*")); // Permitir cualquier encabezado
+        configuration.setAllowCredentials(true); // Permitir credenciales si es necesario
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Aplicar a todas las rutas
+        return source;
     }
 
     @Bean
