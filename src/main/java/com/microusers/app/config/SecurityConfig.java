@@ -53,15 +53,16 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .cors(withDefaults()) // Habilitar CORS
-                .httpBasic(withDefaults())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.GET, "/login/hola").permitAll(); // Endpoint público
-                    http.requestMatchers(HttpMethod.GET, "/login/hola-secured").hasAnyAuthority("READ"); // Endpoint privado
-                    http.anyRequest().denyAll(); // Deniega todo lo demás
+                    http.requestMatchers("/projects/**").permitAll(); // Permitir acceso a todos los endpoints de /projects
+                    http.requestMatchers("/user/**").permitAll(); // Permitir acceso a todos los endpoints de /user
+                    http.anyRequest().permitAll(); // Proteger otras rutas
                 })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(Customizer.withDefaults()) // Si estás usando autenticación básica
                 .build();
     }
+
 
     // Configuración de CORS
 

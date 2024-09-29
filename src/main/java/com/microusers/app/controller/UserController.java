@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
-@PreAuthorize("permitAll()")
 public class UserController {
 
     @Autowired
@@ -39,6 +38,11 @@ public class UserController {
                     .body("Error al guardar el usuario "+ e.getMessage());
         }
 
+    }
+
+    @PostMapping("/verify-email")//Este endpoint recibe un string de 4 caracteres
+    public boolean verifiedUser(@RequestParam String codeVerification){
+        return true;
     }
 
     @GetMapping
