@@ -6,15 +6,13 @@ import com.microusers.app.persistence.entity.ProjectEntity;
 import com.microusers.app.persistence.entity.UserEntity;
 import com.microusers.app.persistence.mapper.UserMapper;
 import com.microusers.app.persistence.repository.ProjectRepository;
+import com.microusers.app.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,21 +20,21 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    UserRepository userRepository;
 
+    public void saveProject(ProjectEntity projectEntity, Integer idUsuario){
+        UserEntity user = userRepository.findById(idUsuario).orElseThrow(()-> new RuntimeException("Usuario Invalido"));
 
-    public void saveProject(ProjectEntity projectsEntity){
-        //establecemos un identificador global al projecto
-        UUID uuid = UUID.randomUUID();
-        projectsEntity.setUuid(uuid);
-        //establecemos la fecha de creacion a la fecha y hora actual
-        LocalDateTime fechaCreacion= LocalDateTime.now();
-        projectsEntity.setFechaCreacion(fechaCreacion);
+        projectEntity.setUuid(UUID.randomUUID());
+        projectEntity.setFechaCreacion(LocalDateTime.now());
+        System.out.println(user.getEmail());
+        Set<UserEntity> usuario = new HashSet<>();
+        usuario.add(user);
+        projectEntity.setUsuarios(usuario);
+        user.getProjecs().add(projectEntity);
 
-        if (projectsEntity.getCustomEmail().isEmpty()) { //Si la entidad no viene con email entonces se guarda con null
-            projectsEntity.setCustomEmail(null);
-        }
-
-        projectRepository.save(projectsEntity);
+        projectRepository.save(projectEntity);
     }
 
     public ProjectAndUsersDTO projectAndUsers(Integer idProject) {

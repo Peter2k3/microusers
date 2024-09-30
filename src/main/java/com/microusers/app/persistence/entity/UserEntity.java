@@ -12,6 +12,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "usuarios")
 public class UserEntity {
@@ -35,6 +36,9 @@ public class UserEntity {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_rol"))
-    private final Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
+
+    @ManyToMany(mappedBy = "usuarios")
+    private Set<ProjectEntity> projecs = new HashSet<>();
 
 }

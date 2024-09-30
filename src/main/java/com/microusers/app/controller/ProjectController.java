@@ -7,6 +7,7 @@ import com.microusers.app.persistence.repository.ProjectRepository;
 import com.microusers.app.service.ProjectService;
 import com.microusers.app.service.UserService;
 import jakarta.persistence.PrePersist;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,23 +29,21 @@ public class ProjectController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> saveProject (@RequestBody ProjectEntity projectEntity){
-        if (projectEntity.getNombre().isEmpty() & projectEntity.getUsuarios().isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("El nombre del proyecto ni sus usuarios no puede estar vacio");
-        }
+    public ResponseEntity<?> saveProject (@RequestParam Integer idUsuario, @RequestParam String email,
+                                          @RequestParam String projectName){
+        ProjectEntity project = new ProjectEntity();
 
-        Integer idUsuario = projectEntity.getUsuarios().stream().findFirst().get().getIdUsuario();
-        Optional<UserEntity> user = userService.findUserById(idUsuario);
-        Set<UserEntity> setUser = new HashSet<>();
-        projectEntity.setUsuarios(setUser);
-        projectService.saveProject(projectEntity);
+        project.setCustomEmail(email);
+        project.setNombre(projectName);
+        projectService.saveProject(project, idUsuario);
         return ResponseEntity.status(HttpStatus.CREATED).body("El proyecto se creo con exito");
     }
 
     //@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PreAuthorize("permitAll()")
     @GetMapping("/{idProyecto}")
-    public ProjectAndUsersDTO projectAndUsersDTO(Integer idProyecto){
-        return projectService.projectAndUsers(idProyecto);
+    public ResponseEntity<ProjectAndUsersDTO> getProjectAndUsers(@PathVariable Integer idProyecto) {
+        ProjectAndUsersDTO projectAndUsers = projectService.projectAndUsers(idProyecto);
+        return ResponseEntity.ok(projectAndUsers);
     }
 }
