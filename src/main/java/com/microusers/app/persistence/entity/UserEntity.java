@@ -36,9 +36,11 @@ public class UserEntity {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_rol"))
+    @Builder.Default
     private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToMany(mappedBy = "usuarios")
+    @Builder.Default
     private Set<ProjectEntity> projecs = new HashSet<>();
 
 }

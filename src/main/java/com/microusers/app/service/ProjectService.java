@@ -1,6 +1,7 @@
 package com.microusers.app.service;
 
 import com.microusers.app.persistence.dto.ProjectAndUsersDTO;
+import com.microusers.app.persistence.dto.ProjectDTO;
 import com.microusers.app.persistence.dto.UserEntityDTO;
 import com.microusers.app.persistence.entity.ProjectEntity;
 import com.microusers.app.persistence.entity.UserEntity;
@@ -59,6 +60,8 @@ public class ProjectService {
             throw new EntityNotFoundException("El proyecto con el id " + idProject + " no existe");
         }
     }
+
+    
 
 
 }

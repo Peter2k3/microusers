@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
+    @Autowired(required=true)
     private UserRepository userRepository;
 
     public void saveUser(UserEntity userEntity){
