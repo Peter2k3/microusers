@@ -7,7 +7,9 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 import java.util.UUID;
+
 
 @Setter
 @Getter
@@ -34,5 +36,8 @@ public class ProjectEntity {
     @JoinTable(name = "proyectos_usuarios", joinColumns = @JoinColumn(name = "id_proyecto"), inverseJoinColumns = @JoinColumn(name = "id_usuario"))
     @Builder.Default
     private Set<UserEntity> usuarios= new HashSet<>();
+
+    @OneToMany(mappedBy = "proyecto")
+    private List<TokenEntity> tokens;
 
 }

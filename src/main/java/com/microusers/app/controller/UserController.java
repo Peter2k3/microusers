@@ -38,12 +38,10 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario guardado con exito");
 
-
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al guardar el usuario "+ e.getMessage());
         }
-
     }
 
     @PostMapping("/verify-email")//Este endpoint recibe un string de 4 caracteres
