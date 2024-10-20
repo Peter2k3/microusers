@@ -48,29 +48,6 @@ public class ProjectController {
         return ResponseEntity.ok(projectAndUsers);
     }
 
-    @PostMapping("/create-token")
-    public ResponseEntity<?> createToken(@RequestBody TokenRequestDTO tokenRequest) {
-        UserEntity user = tokenRequest.getUser();
-        ProjectEntity projectEntity = tokenRequest.getProjectEntity();
-        
-        if (user.getIdUsuario() == null) {
-            return ResponseEntity.badRequest().body("idUsuarioNulo");
-        }
     
-        Optional<UserEntity> userVerify = userService.findUserById(user.getIdUsuario());
-    
-        if (!userVerify.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede encontrar al usuario");
-        }
-    
-        UserEntity verifiedUser = userVerify.get();
-    
-        if (verifiedUser.getProjecs().contains(projectEntity)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usted no puede crear tokens para este proyecto");
-        }
-    
-        String tokenString = tokenService.createToken(projectEntity.getIdProyecto()); 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(tokenString);
-    }
     
 }

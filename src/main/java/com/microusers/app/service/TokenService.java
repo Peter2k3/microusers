@@ -2,6 +2,7 @@ package com.microusers.app.service;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class TokenService {
     TokenEntityRepository tokenRepository;
     @Autowired
     ProjectService projectService;
+
     private static final SecureRandom secureRandom = new SecureRandom(); // threadsafe
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); // threadsafe
 
@@ -41,5 +43,15 @@ public class TokenService {
         return token;
     }
 
+    public void deleteLogically(TokenEntity tokenEntity){
+        tokenEntity.setStatus("delete");
+    }
 
+    public void deletePhysically(Integer idToken){
+        tokenRepository.deleteById(idToken);
+    }
+
+    public Optional<TokenEntity> findByToken(String token){
+        return tokenRepository.findByToken(token);
+    }
 }

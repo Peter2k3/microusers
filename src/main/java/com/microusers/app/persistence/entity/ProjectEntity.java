@@ -32,6 +32,8 @@ public class ProjectEntity {
 
     private String customEmail;
 
+    private String typeOfPlan;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "proyectos_usuarios", joinColumns = @JoinColumn(name = "id_proyecto"), inverseJoinColumns = @JoinColumn(name = "id_usuario"))
     @Builder.Default

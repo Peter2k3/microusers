@@ -10,4 +10,6 @@ import com.microusers.app.persistence.entity.TokenEntity;
 @Repository
 public interface TokenEntityRepository extends JpaRepository<TokenEntity, Integer>{
 
+    public Optional<TokenEntity> findByToken(String token);
+
 }

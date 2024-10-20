@@ -29,7 +29,7 @@ public class TokenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idToken;
 
-    @Column(length = 40, nullable = false, unique = true)
+    @Column(length = 50, nullable = false, unique = true)
     private String token;
 
     @Column(length = 50, unique = true)
