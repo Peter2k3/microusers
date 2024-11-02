@@ -43,4 +43,7 @@ public class UserEntity {
     @Builder.Default
     private Set<ProjectEntity> projecs = new HashSet<>();
 
+    @OneToOne(mappedBy = "user")
+    private UserVerification userVerification;
+
 }

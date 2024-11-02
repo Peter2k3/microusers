@@ -60,7 +60,7 @@ public class TokenController {
         if (token.isEmpty() | project.isEmpty()) {
             return ResponseEntity.badRequest().body("Invalido el token: " + token.isEmpty() + " El proyecto: " + project.isEmpty());
         }
-        if (!(token.get().getProyecto().getIdProyecto()==project.get().getIdProyecto())) {
+        if (!token.get().getProyecto().getIdProyecto().equals(project.get().getIdProyecto())) {
             return ResponseEntity.badRequest().body("El token no corresponde al proyecto: " +  project.get().getIdProyecto());
         }
         boolean isFree = "free".equals(project.get().getTypeOfPlan());

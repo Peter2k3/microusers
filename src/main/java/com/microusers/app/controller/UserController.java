@@ -1,10 +1,14 @@
 package com.microusers.app.controller;
 
+import com.microusers.app.httpclient.EmailService;
 import com.microusers.app.persistence.dto.UserDetailDto;
 import com.microusers.app.persistence.dto.UserLoginRequest;
+import com.microusers.app.persistence.dto.UserVerificationDTO;
 import com.microusers.app.persistence.entity.UserEntity;
 import com.microusers.app.persistence.mapper.UserMapper;
 import com.microusers.app.service.UserService;
+import com.microusers.app.service.VerificationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +29,14 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    VerificationService verificationService;
+
+    @Autowired
+    EmailService emailService;
+
+
+
     @PostMapping
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity){
         try {
@@ -35,6 +47,9 @@ public class UserController {
                         .body("Ya existe usuario con el correo "+ userEntity.getEmail());
             }
             userService.saveUser(userEntity);
+            UserVerificationDTO uVerificationDTO = verificationService.createVerification(userEntity);
+            System.err.println(uVerificationDTO);;
+            emailService.sendVerificationEmail(uVerificationDTO);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario guardado con exito");
 
@@ -44,9 +59,9 @@ public class UserController {
         }
     }
 
-    @PostMapping("/verify-email")//Este endpoint recibe un string de 4 caracteres
-    public boolean verifiedUser(@RequestParam String codeVerification){
-        return true;
+    @PostMapping("/verify-email")//Este endpoint recibe un int de 4 caracteres
+    public String verifiedUser(@RequestBody UserVerificationDTO userVerificationDTO){
+        return emailService.sendVerificationEmail(userVerificationDTO);
     }
 
     @GetMapping //Este endpoint solo lo podrá utilizar el admin
