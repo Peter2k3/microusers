@@ -59,6 +59,9 @@ public class ProjectController {
         return ResponseEntity.ok(projectAndUsers);
     }
 
-    
-    
+    @DeleteMapping
+    public ResponseEntity<?> deleteProject(@RequestParam Integer idProject){
+        projectService.deleteProjectById(idProject);
+        return ResponseEntity.ok().body("Projecto borrado con exito");
+    }
 }

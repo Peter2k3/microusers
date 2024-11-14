@@ -1,4 +1,4 @@
-package com.microusers.app.httpclient;
+package com.microusers.app.http;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

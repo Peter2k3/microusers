@@ -1,6 +1,6 @@
 package com.microusers.app.controller;
 
-import com.microusers.app.httpclient.EmailService;
+import com.microusers.app.http.EmailService;
 import com.microusers.app.persistence.dto.UserDetailDto;
 import com.microusers.app.persistence.dto.UserLoginRequest;
 import com.microusers.app.persistence.dto.UserVerificationDTO;

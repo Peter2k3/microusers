@@ -39,5 +39,4 @@ public class UserVerification {
     @OneToOne
     @JoinColumn(name = "id_user")    
     private UserEntity user;
-
 }

@@ -32,6 +32,7 @@ public class AppApplication {
             UserEntity user = UserEntity.builder()
 					.email("email@email.com")
 					.password("contraseña")
+					.roles(Set.of(RoleEntity.builder().roleEnum(RoleEnum.USER).build()))
 					.build();
 
 			new ProjectEntity();
