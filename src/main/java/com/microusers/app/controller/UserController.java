@@ -84,5 +84,16 @@ public class UserController {
         return new ResponseEntity<>(UserMapper.toUserDetailDTO(userFind.get()), HttpStatus.OK);
     }
     
+    @PostMapping("/recover")
+    public ResponseEntity<?> recoverPassword(@RequestParam String email){
+        Optional<UserEntity> user = userService.findUserByEmail(email);
 
+        if (user.isEmpty()) return ResponseEntity.badRequest()
+                                                 .body("Email invalido, ese correo no existe en nuestra base de datos");
+
+        UserVerificationDTO dto = verificationService.createVerification(user.get());
+
+        emailService.sendVerificationEmail(dto);
+        return ResponseEntity.accepted().build();
+    }
 }

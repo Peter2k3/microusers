@@ -8,6 +8,8 @@ import com.microusers.app.persistence.dto.UserVerificationDTO;
 import com.microusers.app.persistence.entity.UserEntity;
 import com.microusers.app.persistence.entity.UserVerification;
 import com.microusers.app.persistence.repository.VerificationEntityRepository;
+
+import java.util.Optional;
 import java.util.Random;
 import java.time.LocalDateTime;
 
@@ -47,6 +49,10 @@ public class VerificationService {
             vEntityRepository.delete(userVerification);
             return true;
         }
+    }
+
+    public Optional<UserVerification> findUserVerification(Integer code){
+        return vEntityRepository.findByCode(code);
     }
 
 }
