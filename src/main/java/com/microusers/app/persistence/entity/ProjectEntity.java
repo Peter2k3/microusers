@@ -34,7 +34,7 @@ public class ProjectEntity {
 
     private String typeOfPlan;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "proyectos_usuarios", joinColumns = @JoinColumn(name = "id_proyecto"), inverseJoinColumns = @JoinColumn(name = "id_usuario"))
     @Builder.Default
     private Set<UserEntity> usuarios= new HashSet<>();
